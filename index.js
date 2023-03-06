@@ -3,44 +3,57 @@ var inquirer = require('inquirer')
 var fs = require('fs')
 
 //creating the html buffer
-var buf = `<!DOCTYPE html>
+let buf = `<!DOCTYPE html>
     <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
         <title>Team Profiles</title>
         <style>
             .member {
-                width: auto;
-                padding: 25px
-                margin: 50px;
-                background-color: #d6d0c5;
-                box-shadow: 0px 3px 3px;
-                border-radius:25px;
+                width: 50%;
+                margin-left: 25%;
+                text-align: center;
+                background-color: #dce4f7;
+                border-radius: 25px;
+            }
+            h3, 
+            h4 {
+                /* display: flex; */
+                font-size: 50px
+                justify-items: center;
+                /* margin-left: 230px; */
             }
             .inner{
                 width: auto;
-                background-color: #e6d9c3;
-                padding: 35px;
+                display: flex;
+                justify-content: center;
+                display: inline-flex;
+                background-color: #f1f1f1;
+                padding: 30px;
                 border-radius: 25px;
             }
         </style>
     </head>
     <body>
-    <div style="width: 100%; height: auto; text-align: center; background-color: rgb(192, 255, 234);">
-                <h1> This Team </h1>
+    <div style=
+        "width: 100%; 
+        height: auto; 
+        text-align: center; 
+        border-radius: 25px;
+        padding: 10px;
+        background-color: rgb(197, 207, 243);">
+                <h1> Team Profile </h1>
             </div>
             <br>
             <div class="container">
                 <div class="row">`
 
 //declare team variables
-let team = {}
 let manager = {}
-let engineer = {}
-let intern = {}
+let engineers = []
+let interns = []
 
 //require for an entry
 const isEmpty = async (input) =>{
@@ -60,30 +73,29 @@ function writeToFile(fileName, data)
 
 //function to build the HTML
 function buildHtml() {
-    console.log("Generated and appended responses to file");
-    managers.forEach(manager => {
-    buf +=
-        `<div class ="col-sm member">
+        buf +=
+        `<div class="col-sm member">
             <h4>${manager.name}</h4>
             <h3>Manager</h3>
-                <div class = "inner">
-                ID: ${manager.id} </br>
-                Email: ${manager.email} </br>
-                office number: ${manager.office}
+            <div class="inner">
+            ID: ${manager.ID}<br>
+            Email: ${manager.email}<br>
+            Office number: ${manager.office}
+            </div>
+        </div>`
+
+    engineers.forEach(engineer => 
+    {
+        buf +=
+        `<div class="col-sm member">
+            <h4>${engineer.name}</h3>
+            <h3>Engineer</h3>
+                <div class="inner">
+                ID: ${engineer.ID}</br>
+                Email: ${engineer.email}</br>
+                Github Link: ${engineer.github}
                 </div>
         </div>`
-})
-    engineers.forEach(engineer => {
-    buf +=
-    `<div class="col-sm member">
-        <h4>${engineer.name}</h3>
-        <h3>Engineer</h3>
-            <div class="inner">
-            ID: ${engineer.id}</br>
-            Email: ${engineer.email}</br>
-            Github Link: ${engineer.github}
-            </div>
-    </div>`
 })
     interns.forEach(intern => {
     buf +=
@@ -91,7 +103,7 @@ function buildHtml() {
         <h4>${intern.name}</h4>
         <h3>Intern</h3>
             <div class="inner">
-            ID: ${intern.id}</br>
+            ID: ${intern.ID}</br>
             Email: ${intern.email}</br>
             School: ${intern.school}
             </div>
@@ -119,7 +131,7 @@ const managerQ = [
     },
     {
     type:'input',
-    name:'id',
+    name:'ID',
     message:'Enter id',
     validate: isEmpty,
     },
@@ -134,7 +146,7 @@ const managerQ = [
     name:'office',
     message:'Enter office number',
     validate: isEmpty,
-    },
+    }
 ]
 
 //engineer questions
@@ -147,7 +159,7 @@ const engineerQ = [
     },
     {
     type:'input',
-    name:'id',
+    name:'ID',
     message:'Enter id',
     validate: isEmpty,
     },
@@ -162,7 +174,7 @@ const engineerQ = [
     name:'github',
     message:'Enter github username',
     validate: isEmpty,
-    },
+    }
 ];
 
 //intern section
@@ -175,7 +187,7 @@ const internQ = [
     },
     {
     type:'input',
-    name:'id',
+    name:'ID',
     message:'Enter id',
     validate: isEmpty,
     },
@@ -187,35 +199,12 @@ const internQ = [
     },
     {
     type:'input',
-    name:'office',
+    name:'school',
     message:'Enter school',
     validate: isEmpty,
-    },
+    }
 ]
 
-//function to add an manager
-function addManager()
-{
-    inquirer.prompt(managerQ)
-    .then((answers) =>
-    {
-        newManager = {};
-        newManager.name = answers.name;  
-        newManager.ID = answers.ID;
-        newManager.email = answers.email;
-        newManager.office = answers.office;
-        managers.push(newManager);
-        addMenu();
-    })
-    .catch((error) =>
-    {
-        if (error.isTtyError){
-            console.log('Error adding manager')
-        } else{
-            console.log('Error')
-        }
-    })
-}
 
 //function to add an engineer
 function addEngineer()
@@ -236,7 +225,7 @@ function addEngineer()
         if (error.isTtyError){
             console.log('Error adding engineer')
         } else{
-            console.log('Error')
+            console.log('Error2')
         }
     })
 }
@@ -251,7 +240,7 @@ function addIntern()
         newIntern.name = answers.name;  
         newIntern.ID = answers.ID;
         newIntern.email = answers.email;
-        newIntern.github = answers.github;
+        newIntern.school = answers.school;
         interns.push(newIntern);
         addMenu();
     })
@@ -260,11 +249,10 @@ function addIntern()
         if (error.isTtyError){
             console.log('Error adding intern')
         } else{
-            console.log('Error')
+            console.log('Error3')
         }
     })
 }
-
 
 //function itterates to add team members
 function addMenu()
@@ -275,17 +263,39 @@ function addMenu()
                 type: 'list',
                 name: 'selection',
                 message: 'Enter more employees?',
-                choices: ['Add Manager','Add Engineer', 'Add Intern', 'Done'],
+                choices: ['Add Engineer', 'Add Intern', 'Done'],
             }
         ]).then((response) =>
         {
-            if (response.selection == 'Add Manager') return addManager();
-            else if (response.selection == 'Add Engineer') return addEngineer();
+            if (response.selection == 'Add Engineer') return addEngineer();
             else if (response.selection == 'Add Intern') return addIntern();
-            else if (response.selection == 'Done') return buildHTML();
+            else if (response.selection == 'Done') return buildHtml();
             else return console.log(selection);
         });
 }
+
+//function to add an manager
+function addManager()
+{
+    inquirer.prompt(managerQ)
+    .then((answers) =>
+    {
+        manager.name = answers.name;  
+        manager.ID = answers.ID;
+        manager.email = answers.email;
+        manager.office = answers.office;
+        addMenu();
+    })
+    .catch((error) =>
+    {
+        if (error.isTtyError){
+            console.log('Error adding manager')
+        } else{
+            console.log('Error1')
+        }
+    })
+}
+
 
 //Intro to the app
 inquirer.prompt(
@@ -297,7 +307,6 @@ inquirer.prompt(
         }
     ]).then((response) =>
     {
-        if (response.begin) 
-            return addManager();
+        if (response.begin) return addManager();
         else return console.log('Session ended')
     })

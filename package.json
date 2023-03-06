@@ -4,19 +4,21 @@
     "description": "",
     "main": "index.js",
     "directories": {
-      "test": "test"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "scripts": {
-      "test": "jest"
+        "test": "jest"
     },
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/erech/EH-Team-Profile-Generator.git"
+        "type": "git",
+        "url": "git+https://github.com/erech/EH-Team-Profile-Generator.git"
     },
     "author": "",
-    "license": "ISC",
     "bugs": {
-      "url": "https://github.com/erech/EH-Team-Profile-Generator/issues"
+        "url": "https://github.com/erech/EH-Team-Profile-Generator/issues"
     },
-    "homepage": "https://github.com/erech/EH-Team-Profile-Generator#readme"
-  }
+    "homepage": "https://github.com/erech/EH-Team-Profile-Generator#readme",
+    "dependencies": {
+        "inquirer": "^8.2.4"
+    }
+}
