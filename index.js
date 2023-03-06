@@ -61,6 +61,7 @@ function writeToFile(fileName, data)
 //function to build the HTML
 function buildHtml() {
     console.log("Generated and appended responses to file");
+    managers.forEach(manager => {
     buf +=
         `<div class ="col-sm member">
             <h4>${manager.name}</h4>
@@ -71,7 +72,7 @@ function buildHtml() {
                 office number: ${manager.office}
                 </div>
         </div>`
-
+})
     engineers.forEach(engineer => {
     buf +=
     `<div class="col-sm member">
@@ -192,3 +193,111 @@ const internQ = [
     },
 ]
 
+//function to add an manager
+function addManager()
+{
+    inquirer.prompt(managerQ)
+    .then((answers) =>
+    {
+        newManager = {};
+        newManager.name = answers.name;  
+        newManager.ID = answers.ID;
+        newManager.email = answers.email;
+        newManager.office = answers.office;
+        managers.push(newManager);
+        addMenu();
+    })
+    .catch((error) =>
+    {
+        if (error.isTtyError){
+            console.log('Error adding manager')
+        } else{
+            console.log('Error')
+        }
+    })
+}
+
+//function to add an engineer
+function addEngineer()
+{
+    inquirer.prompt(engineerQ)
+    .then((answers) =>
+    {
+        newEngineer = {};
+        newEngineer.name = answers.name;  
+        newEngineer.ID = answers.ID;
+        newEngineer.email = answers.email;
+        newEngineer.github = answers.github;
+        engineers.push(newEngineer);
+        addMenu();
+    })
+    .catch((error) =>
+    {
+        if (error.isTtyError){
+            console.log('Error adding engineer')
+        } else{
+            console.log('Error')
+        }
+    })
+}
+
+//function to add an intern
+function addIntern()
+{
+    inquirer.prompt(internQ)
+    .then((answers) =>
+    {
+        newIntern = {};
+        newIntern.name = answers.name;  
+        newIntern.ID = answers.ID;
+        newIntern.email = answers.email;
+        newIntern.github = answers.github;
+        interns.push(newIntern);
+        addMenu();
+    })
+    .catch((error) =>
+    {
+        if (error.isTtyError){
+            console.log('Error adding intern')
+        } else{
+            console.log('Error')
+        }
+    })
+}
+
+
+//function itterates to add team members
+function addMenu()
+{
+    inquirer.prompt(
+        [
+            {
+                type: 'list',
+                name: 'selection',
+                message: 'Enter more employees?',
+                choices: ['Add Manager','Add Engineer', 'Add Intern', 'Done'],
+            }
+        ]).then((response) =>
+        {
+            if (response.selection == 'Add Manager') return addManager();
+            else if (response.selection == 'Add Engineer') return addEngineer();
+            else if (response.selection == 'Add Intern') return addIntern();
+            else if (response.selection == 'Done') return buildHTML();
+            else return console.log(selection);
+        });
+}
+
+//Intro to the app
+inquirer.prompt(
+    [
+        {
+            type: 'confirm',
+            name: 'begin',
+            message: 'Start',
+        }
+    ]).then((response) =>
+    {
+        if (response.begin) 
+            return addManager();
+        else return console.log('Session ended')
+    })
