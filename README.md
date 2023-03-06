@@ -13,7 +13,7 @@ enter the following on the terminal:
 After installed, run node index.js on the terminal and input responses to the questions.  
   
 User can add as much engineers and interns as needed.  
-Generated html will appear under generated folder.  
+The generated html will appear under 'generated' directory.  
 
 ## Demo
 
